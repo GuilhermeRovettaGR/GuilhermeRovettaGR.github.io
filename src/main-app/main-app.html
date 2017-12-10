@@ -104,7 +104,7 @@
             }           
         </style>
         
-        <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
+        <app-location route="{{route}}" url-space-regex="^[[rootPath]]" use-hash-as-path></app-location>
         <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
         <app-header reveals="">
