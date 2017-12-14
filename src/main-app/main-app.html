@@ -116,7 +116,7 @@
                     <paper-tabs selected="0" role="navigation" scrollable="" fit-container="">
                         <template is="dom-repeat" items="{{links}}">
                             <paper-tab link="">
-                                <a name="#/{{item.url}}" href="[[rootPath]]#/{{item.url}}">{{item.name}}</a>
+                                <a name="{{item.url}}" href="[[rootPath]]{{item.url}}">{{item.name}}</a>
                             </paper-tab>
                         </template>
                     </paper-tabs>
@@ -171,35 +171,35 @@
                         value: function() {
                             return [{
                                     name: 'Home',
-                                    url: 'view1'
+                                    url: '#/view1'
                                 },
                                 {
                                     name: 'Cone Pizzas',
-                                    url: 'view2'
+                                    url: '#/view2'
                                 },
                                 {
                                     name: 'Onde está Wally?',
-                                    url: 'view3'
+                                    url: '#/view3'
                                 },
                                 {
                                     name: 'GOTSpoilers',
-                                    url: 'view4'
+                                    url: '#/view4'
                                 },
                                 {
                                     name: 'CANTARes',
-                                    url: 'view5'
+                                    url: '#/view5'
                                 },
                                 {
                                     name: 'tGLN',
-                                    url: 'view6'
+                                    url: '#/view6'
                                 },
                                     {
                                     name: 'Safe Lock',
-                                    url: 'view7'
+                                    url: '#/view7'
                                 },
                                 {
                                     name: 'Find who?',
-                                    url: 'view8'
+                                    url: '#/view8'
                                 }
                             ];
                         }
