@@ -1,4 +1,5 @@
-<!-- Polymer Components--><link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<!-- Polymer Components-->
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/app-layout/app-layout.html">
 
 <link rel="import" href="../../bower_components/app-route/app-location.html">
@@ -104,8 +105,8 @@
             }           
         </style>
         
-        <app-location route="{{route}}" url-space-regex="^[[rootPath]]"></app-location>
-        <app-route route="{{route}}" pattern="[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
+        <app-location route="{{route}}" use-hash-as-path url-space-regex="^[[rootPath]]"></app-location>
+        <app-route route="{{route}}" pattern="#/[[rootPath]]:page" data="{{routeData}}" tail="{{subroute}}"></app-route>
 
         <app-header reveals="">
             <app-toolbar>
@@ -170,35 +171,35 @@
                         value: function() {
                             return [{
                                     name: 'Home',
-                                    url: 'view1'
+                                    url: '#/view1'
                                 },
                                 {
                                     name: 'Cone Pizzas',
-                                    url: 'view2'
+                                    url: '#/view2'
                                 },
                                 {
                                     name: 'Onde está Wally?',
-                                    url: 'view3'
+                                    url: '#/view3'
                                 },
                                 {
                                     name: 'GOTSpoilers',
-                                    url: 'view4'
+                                    url: '#/view4'
                                 },
                                 {
                                     name: 'CANTARes',
-                                    url: 'view5'
+                                    url: '#/view5'
                                 },
                                 {
                                     name: 'tGLN',
-                                    url: 'view6'
+                                    url: '#/view6'
                                 },
                                     {
                                     name: 'Safe Lock',
-                                    url: 'view7'
+                                    url: '#/view7'
                                 },
                                 {
                                     name: 'Find who?',
-                                    url: 'view8'
+                                    url: '#/view8'
                                 }
                             ];
                         }
