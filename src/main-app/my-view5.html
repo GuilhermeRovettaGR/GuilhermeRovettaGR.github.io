@@ -394,8 +394,6 @@
                 this.text = this.format(this.text);
                 this.lyric = this.format(this.lyric);
                 this.interval = 10;
-                
-                console.log(this.lyric);
                 var listOri = this.lyric.split(" ");                
                 this.aleatory = this.random(listOri.length, this.interval);
                 this.populateSorted(listOri, this.aleatory);
@@ -414,8 +412,7 @@
             toggle(){
                 this.$.recognition._toggle(); 
                 this.text = this.$.recognition.text;
-                this.$.toggle.classList.toggle("blink");
-                
+                this.$.toggle.classList.toggle("blink");                
                 this.$.check.classList.remove("disabled");
                 this.$.check.disabled = false;
                 this.$.clear.classList.remove("disabled");
@@ -429,13 +426,10 @@
             
             check(){
                 this.$.toggle.classList.remove("blink"); 
-                this.$.recognition._stop(); 
-                              
-                this.text = this.$.recognition.text; 
-                
+                this.$.recognition._stop();                              
+                this.text = this.$.recognition.text;                
                 this.text = this.format(this.text);
-                this.lyric = this.format(this.lyric);
-                
+                this.lyric = this.format(this.lyric);               
                 this.compare(this.text);
             } 
             
@@ -447,8 +441,7 @@
             }
             
             compare(spoken){
-                var listSpo = spoken.split(" ");
-                
+                var listSpo = spoken.split(" ");               
                 for(var i = 0; i < this.sorted.length; i++){                   
                     if(this.sorted[i] === listSpo[i]){
                         this.count++;
@@ -456,8 +449,7 @@
                         this.count = 0;
                         break;
                     }
-                }
-                
+                }                
                 this.validation();               
                 this.clear();
             }
@@ -500,7 +492,6 @@
             
             select(e) {
                 var id = e.path[6].id;
-                console.log(id);
                 for(var i = 0; i < this.songs.length; i++){                   
                     if(this.songs[i].id === id){
                         console.log(i);

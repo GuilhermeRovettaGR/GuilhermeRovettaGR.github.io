@@ -7,6 +7,7 @@
             :host {
                 display: block;
                 padding: 10px;
+                background-color: #3f51b5;
             }
 
             .list{
@@ -74,14 +75,22 @@
                 text-decoration: none;
                 color: #FFFFFF;
             }
+            
+            h1 {
+                text-align: center;
+            }
+            
+            p {
+                text-align: justify;
+            }
         </style>
 
-        <div class="card page">
-            <h1>CENTRAL - DevSensorAPI</h1>
+        <div class="card page layout center-justified">
+            <h1>Home - DevSensorAPI</h1>
             <p>A DevSensorAPI é uma biblioteca de componentes web para a manipulação de sensores em dispositivos móveis desenvolvida por Guilherme Rovetta.</p>
             <p>Essa aplicação tem como objetivo demonstrar a utilização de todos os componentes desenvolvidos para o trabalho de conclusão de curso de Engenharia da Computação na ETEP Faculdades (Esplanada SJC).</p>
             <p>Abaixo são exibidas todas as opcões de aplicações e suas respectivas descrições:</p>
-            <div class="container layout horizontal wrap">
+            <div class="container layout center horizontal wrap">
                 <template is="dom-repeat" items="{{list}}">
                     <div class="card list" id="[[item.color]]">
                         <a href="{{item.link}}" class="links"><h1>{{item.name}}</h1></a>

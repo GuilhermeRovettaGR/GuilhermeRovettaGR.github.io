@@ -3,7 +3,6 @@
 <link rel="import" href="../../bower_components/iron-icons/social-icons.html">
 <link rel="import" href="../../bower_components/paper-badge/paper-badge.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="../device-vibration/device-vibration.html">
 <link href="https://fonts.googleapis.com/css?family=Rum+Raisin" rel="stylesheet">
@@ -21,7 +20,7 @@
             .preload-image img {
                 width: 100px;
                 height: 100px;
-                background: #ddd;
+                background: #ffffff;
                 margin: 10px;
             }
 
@@ -73,16 +72,6 @@
                 text-align: justify;
             }
             
-            .resetButton {
-                background-color: var(--app-primary-color);
-                color: #FFFFFF;
-            }
-            
-            .center {
-                text-align: center;
-                vertical-align: middle;
-            }
-            
             .links {
                 text-decoration: none;
                 color: #fb1e26;
@@ -92,14 +81,11 @@
         <div class="card page layout center-justified">       
             <h1>Onde está Wally?</h1>
             <p>Bem-vindo ao jogo Onde está Wally. Esse jogo é inspirado no personagem de Martin Handford (1982) que lançou uma série de livros ilustrados.</p>
-            <p>Já nesse jogo, o objetivo é encontrar o Wally clicando nos quadrados abaixo. Abaixo há um marcador de tentativas para você ver seu desempenho, quando encontrar o nosso personagem sua imagem aparecerá e uma notificação de vibração será enviado para seu dispositivo. Para jogar novamente clique no botão logo abaixo.</p>
-            <div class="center">
-                <paper-button class="resetButton" raised="" on-click="reset">JOGAR NOVAMENTE</paper-button>
-            </div>         
+            <p>Já nesse jogo, o objetivo é encontrar o Wally clicando nos quadrados abaixo. Abaixo há um marcador de tentativas para você ver seu desempenho, quando encontrar o nosso personagem sua imagem aparecerá e uma notificação de vibração será enviado para seu dispositivo.</p>      
         </div>
         
         <div class="container layout horizontal wrap">       
-            <template is="dom-repeat" items="{{images}}">
+            <template is="dom-repeat" items="{{images}}" id="puzzlegame">
                 <div class="preload-image puzzle part">              
                     <img id="{{item.id}}" src$="[[importPath]]assets/default.png" on-click="check">          
                 </div>
@@ -164,7 +150,7 @@
                         type: Number,
                         notify: true,
                         reflectToAttribute: true,
-                        value: 12
+                        value: 16
                     },
                     attempts: {
                         type: Number,
@@ -225,12 +211,8 @@
                     this.shadowRoot.querySelector(id).src = '/src/main-app/assets/wally.png';
                     this.$.vibration.vibrate([500, 300, 100]);
                 } else {
-                    this.shadowRoot.querySelector(id).src = '/src/main-app/assets/error.png';
+                    this.shadowRoot.querySelector(id).src = '/src/main-app/assets/error.jpg';
                 }
-            }
-            
-            reset(){
-                location.reload();
             }
             
             check(e) {

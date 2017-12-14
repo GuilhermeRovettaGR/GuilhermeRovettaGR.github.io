@@ -1,0 +1,108 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../user-notification/user-notification.html">
+
+<dom-module id="device-network">
+    <template> 
+        <style>
+            .error {
+                --user-notification-border-color: #F44336;
+                --user-notification-color: #FFFFFF;
+                --user-notification-background-color: #F44336;
+            }
+        </style>
+        <slot></slot>
+        <user-notification id="notification" class="error" text="{{error}}"></user-notification>    
+    </template>
+    <script>
+        class DeviceNetwork extends Polymer.Element {
+
+            static get is() {
+                return 'device-network'
+            }
+
+            static get properties() {
+                return {
+                    download: {
+                        type: Number,
+                        notify: true,
+                        observer: '_downloadChanged',
+                        reflectToAttribute: true,
+                        value: 0
+                    },
+                    downloadmax: {
+                        type: Number,
+                        notify: true,
+                        observer: '_downloadmaxChanged',
+                        reflectToAttribute: true,
+                        value: 0
+                    },
+                    rtt: {
+                        type: Number,
+                        notify: true,
+                        observer: '_rttChanged',
+                        reflectToAttribute: true,
+                        value: 0
+                    },
+                    type: {
+                        type: String,
+                        notify: true,
+                        observer: '_typeChanged',
+                        reflectToAttribute: true,
+                        value: ""
+                    },
+                    realtype: {
+                        type: String,
+                        notify: true,
+                        observer: '_realtypeChanged',
+                        reflectToAttribute: true,
+                        value: ""
+                    }
+                }
+            }
+
+            _downloadChanged(newValue, oldValue) {
+                this.download = newValue;
+            }
+
+            _downloadmaxChanged(newValue, oldValue) {
+                this.downloadmax = newValue;
+            }
+
+            _rttChanged(newValue, oldValue) {
+                this.rtt = newValue;
+            }
+            
+            _typeChanged(newValue, oldValue) {
+                this.type = newValue;
+            }
+            
+            _realtypeChanged(newValue, oldValue) {
+                this.realtype = newValue;
+            }
+            
+            constructor() {
+                super();
+            }
+
+            getNetworkInformation() {
+                var network = navigator.connection || navigator.mozConnection || navigator.webkitConnection;               
+                if (network) {
+                    this._onShow(network);
+                } else {
+                    console.log("Your device doesn't support this feature");
+                    this.$.notification.open();
+                }
+            }
+
+            _onShow(event) {
+                this.download = event.downlink;
+                this.downloadmax = event.downlinkMax;
+                this.rtt = event.rtt;
+                this.type = event.type;
+                this.realtype = event.effectiveType;
+            }
+        }
+        customElements.define(DeviceNetwork.is, DeviceNetwork);
+
+    </script>
+</dom-module>

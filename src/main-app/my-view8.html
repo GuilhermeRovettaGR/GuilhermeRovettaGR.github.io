@@ -225,7 +225,6 @@
                 this.$.notification.classList.remove("normal");
                 this.$.notification.classList.add("sucess");
                 this.notify("Obrigado, seu jogo foi calibrado com sucesso!");
-                //this.$.game.addEventListener('pointerdown', e => setTimeout(() => this._check(), 100)); 
             }
             
             calibrate(){ 
@@ -250,7 +249,6 @@
             
             init(){
                 this.sorted = this._random(12);
-                console.log(this.sorted);
                 this.namerandom = this.characters[this.sorted].name;
             }
             
@@ -262,7 +260,6 @@
             change(index){
                 this.character = this.characters[index];
                 this._verify(this.character.name);
-                console.log(this.character);
             }
             
             _random(size){
@@ -271,7 +268,6 @@
             } 
             
             _check(){
-                console.log("AQUIII");
                 var x = this.$.pointer.cordx;
                 var y = this.$.pointer.cordy;
                 x = x - this.ox;
@@ -315,9 +311,6 @@
             }
             
             _verify(name){
-                console.log("comparar");
-                console.log(name);
-                console.log(this.namerandom);
                 if(this.namerandom == name){
                     this.$.notification.classList.remove("error");
                     this.$.notification.classList.remove("normal");
