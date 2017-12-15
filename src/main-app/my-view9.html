@@ -1,0 +1,400 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-icons/social-icons.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/google-map/google-map.html">
+<link rel="import" href="../../bower_components/google-map/google-map-marker.html">
+<link rel="import" href="../../bower_components/google-map/google-map-search.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="../device-network/device-network.html">
+<link rel="import" href="../device-geolocation/device-geolocation.html">
+<link rel="import" href="../user-notification/user-notification.html">
+<link href="https://fonts.googleapis.com/css?family=Rum+Raisin" rel="stylesheet">
+
+<dom-module id="my-view9">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+                padding: 10px;
+                background: #fdb1c8;
+            }
+            
+            .divLimit {
+                max-width: 900px;
+                width: 100%;
+            }
+            
+            .links {
+                text-decoration: none;
+                color: #009688;
+                font-weight: bold;
+            }        
+            
+            .control {
+                color: #FFFFFF;
+                background-color: #fdb1c8;
+            }
+            
+            .disabled {
+                visibility: hidden;
+            }
+            
+            h1,h2 {
+                font-family: 'Rum Raisin', sans-serif;
+                text-align: center;
+            }
+            
+            h1 {
+                font-size: 2.5em;
+            }
+            
+            google-map {
+                height: 500px;
+                margin-top: 30px;
+                margin-bottom: 30px;
+                box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            }            
+            
+            paper-input {
+                width: 100%;
+                padding: 5px;
+            }
+            
+            .image {
+                width: 100%;
+                margin-top: 30px;
+            }
+            
+            .error {
+                --user-notification-border-color: #F44336;
+                --user-notification-color: #FFFFFF;
+                --user-notification-background-color: #F44336;
+            }
+            
+            .place-header { 
+                @apply --paper-font-headline; 
+            }
+            
+            .place-light { 
+                color: var(--paper-grey-600); 
+            }
+            
+            .place-location {
+                float: right;
+                font-size: 15px;
+                vertical-align: middle;
+            }
+            
+            #place {
+                max-width: 600px;
+                width: 100%;
+            }
+            
+            p {
+                text-align: justify;
+            }
+        </style>
+
+        <div class="page horizontal center layout">
+            <div class="flex positioning vertical center layout">
+                <div class="card divLimit layout center-justified">       
+                    <h1>PROCURA-SE</h1>
+                    <p>Bem-vindo ao Procura-se, uma aplicação em que o usuário pode pesquisar locais e os mesmos serão mostrados no mapa. Antes de qualquer coisa, o usuário deve clicar no botão para obter sua posição atual. Após isso, o usuário pode digitar e clicar no botão de "lupa" para pesquisar. O usuário pode limpar a pesquisa clicando no botão de "X". O número de resultados é mostrado ao lado do ícone de "local", esse mesmo ícone pode ser clicado e o usuário terá seu mapa atualizado para aquele lugar em específico, o processo pode ser repetido.</p>
+                    <p>No botão de compartilhar, você pode compartilhar suas coordenadas através de algum aplicativo à sua escolha!</p>
+                    
+                    <div class="horizontal center-justified layout">
+                        <device-geolocation id="geolocation"></device-geolocation>
+                        <paper-button raised="" class="control" id="share" on-click="share"><iron-icon icon="icons:social:share"></iron-icon></paper-button>               
+                    </div>
+                    
+                    <div class="container layout horizontal center">
+                        <paper-input id="inputdistance" label="Digite o raio de busca" auto-validate="" pattern="[0-9]*" error-message="Somente números são permitidos!">
+                            <div slot="suffix">km</div>
+                        </paper-input>
+                    </div>  
+    
+                    <div class="container layout horizontal center">
+                        <paper-input label="Pesquisar" id="inputsearch">
+                            <paper-icon-button slot="prefix" on-click="search" icon="icons:search" alt="search" title="search"></paper-icon-button>                           
+                            <div slot="suffix"> 
+                                <paper-icon-button on-click="goToLocation" icon="icons:room" alt="go" title="go"></paper-icon-button>{{quantity}} / {{count}}
+                            </div>
+                            <paper-icon-button slot="suffix" on-click="clearInput" icon="icons:clear" alt="clear" title="clear"></paper-icon-button>
+                        </paper-input> 
+                    </div>   
+                    <device-network id="network"></device-network> 
+                </div>
+
+                <div class="card divLimit container layout vertical">
+                   <google-map-search id="mapsearch" radius="{{radius}}" latitude="-23.1989285" longitude="-45.9054171" map="{{map}}" query="{{query}}" results="{{results}}" api-key="AIzaSyBwkD9aL_kJwNt57GjL9gpQyX3IuteNppI"></google-map-search>
+                    <google-map id="mymap" map="{{map}}" latitude="{{lat}}" longitude="{{long}}" api-key="AIzaSyBwkD9aL_kJwNt57GjL9gpQyX3IuteNppI" zoom="15">
+                        <template is="dom-repeat" items="{{results}}" as="marker">
+                            <google-map-marker latitude="{{marker.latitude}}" longitude="{{marker.longitude}}" api-key="AIzaSyBwkD9aL_kJwNt57GjL9gpQyX3IuteNppI">
+                                <h2>{{marker.name}}</h2>
+                                <span>{{marker.formatted_address}}</span>
+                            </google-map-marker>
+                        </template>
+                    </google-map> 
+                    
+                    <div class="container layout vertical center wrap">
+                        <template is="dom-if" if="{{show}}">
+                           <paper-card image="./donuts.png" alt="Place" id="place">
+                                <div class="card-content">
+                                    <div class="place-header">{{current.name}}
+                                        <div class="place-location place-light">
+                                            <iron-icon icon="communication:location-on"></iron-icon>
+                                            <span><b>{{current.rating}}/ 5</b></span>
+                                        </div>
+                                    </div>
+                                    <p class="place-light"><b>Endereço:</b> {{current.formatted_address}}</p>
+                                </div>
+                                <div class="card-actions">
+                                    <template is="dom-if" if="{{current.opening_hours.open_now}}">
+                                        <p><b>Aberto Agora</b></p>
+                                    </template>
+                                    <template is="dom-if" if="{{!current.opening_hours.open_now}}">
+                                        <p><b>Fechado Agora</b></p>
+                                    </template>
+                                    <div class="horizontal justified">
+                                        <b>Tags:</b>
+                                        <template is="dom-repeat" items="{{current.types}}">
+                                            {{item}} / 
+                                        </template>
+                                    </div>
+                                </div>
+                            </paper-card> 
+                        </template>    
+                    </div> 
+                    
+                    <div class="container layout vertical center wrap">
+                        <template is="dom-if" if="{{network}}">
+                            <img src="/src/main-app/assets/maps_high.jpg" class="image">
+                        </template>  
+                        <template is="dom-if" if="{{!network}}">
+                            <img src="/src/main-app/assets/maps_low.jpg" class="image">
+                        </template> 
+                        <p>Se você está vendo a imagem acima em baixa qualidade é porque sua internet não está tão boa e selecionamos essa qualidade para melhor desempenho. Porém se estiver vendo a imagem em alta qualidade é porque sua internet está boa e selecionamos essa qualidade para um resultado melhor.</p>   
+                    </div>                  
+                </div>
+                
+                <div class="card divLimit container layout vertical">       
+                    <h2>Referências - Imagem utilizada</h2>
+                    <p>A imagem utilizada do Google Maps pertecence ao seu respectivo dono e foi usada apenas para fins acadêmicos, para acessá-la basta clicar no link abaixo:</p>
+                    <p>Disponível em: <a href="https://www.maistecnologia.com/google-maps-ja-informa-lugares-estacionamento-no-brasil/" class="links">Google Maps já informa de lugares de estacionamento no Brasil</a> Acesso em dez. 2017.</p>      
+                </div> 
+            </div>
+        </div>  
+        <user-notification id="notification" class="error" text="{{error}}"></user-notification>          
+  </template>
+
+    <script>
+        class MyView9 extends Polymer.Element {
+            static get is() {
+                return 'my-view9';
+            }
+            
+            static get properties() {
+                return {
+                    lat: {
+                        type: Number,
+                        notify: true,
+                        observer: '_latChanged',
+                        reflectToAttribute: true,
+                        value: -23.1989285
+                    },
+                    long: {
+                        type: Number,
+                        notify: true,
+                        observer: '_longChanged',
+                        reflectToAttribute: true,
+                        value: -45.9054171
+                    },
+                    count: {
+                        type: Number,
+                        notify: true,
+                        observer: '_countChanged',
+                        reflectToAttribute: true,
+                        value: 0
+                    },
+                    quantity: {
+                        type: Number,
+                        notify: true,
+                        observer: '_quantityChanged',
+                        reflectToAttribute: true,
+                        value: 0
+                    },
+                    resultsfiltered: {
+                        type: Object,
+                        notify: true,
+                        value: function() {
+                            return [];
+                        },
+                        observer: '_resultsfilteredChanged'
+                    },
+                    distance: {
+                        type: Number,
+                        notify: true,
+                        observer: '_distanceChanged',
+                        reflectToAttribute: true,
+                        value: 10
+                    },
+                    current: {
+                        type: Object,
+                        notify: true,
+                        value: function() {
+                            return [];
+                        },
+                        observer: '_currentChanged'
+                    },
+                    show: {
+                        type: Boolean,
+                        value: false
+                    },
+                    network: {
+                        type: Boolean,
+                        value: false
+                    }
+                };
+            }
+            
+            _latChanged(newValue, oldValue) {
+                this.lat = newValue;
+            }
+
+            _longChanged(newValue, oldValue) {
+                this.long = newValue;
+            }
+            
+            _countChanged(newValue, oldValue) {
+                this.count = newValue;
+            }
+            
+            _quantityChanged(newValue, oldValue) {
+                this.quantity = newValue;
+            }
+            
+            _resultsfilteredChanged(newValue, oldValue) {
+                this.resultsfiltered = newValue;
+            }
+            
+            _distanceChanged(newValue, oldValue) {
+                this.distance = newValue;
+            }
+            
+            _currentChanged(newValue, oldValue) {
+                this.current = newValue;
+            }
+            
+            constructor() {
+                super();
+            }
+            
+            connectedCallback() {
+                super.connectedCallback();  
+                this.$.mapsearch.addEventListener('results-changed', e => this._resultsChanged());
+                this.$.geolocation.addEventListener('click', e => setTimeout(() => this._updateLocation(), 500));
+                this.verifyNetwork();              
+            }  
+            
+            verifyNetwork() {
+                this.$.network.getNetworkInformation();
+                var quality = this.$.network.realtype;
+                if(quality == "3g" || quality == "4g"){
+                    this.network = true;
+                } else {
+                    this.network = false;
+                }    
+            }
+            
+            share() {
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'Minha posição atual',
+                        text: 'Olá está é a minha posição atual: ' + this.$.geolocation.link + '',
+                        url: 'guilhermerovettagr.github.io',
+                    })
+                    .then(() => console.log('Successful share'))
+                    .catch((error) => console.log('Error sharing', error));
+                } else {
+                    console.log("Your device doesn't support this feature");
+                    this.$.notification.open();
+                }
+            }
+            
+            clearInput() {
+                this.$.inputsearch.value = "";
+            }
+            
+            goToLocation() {
+                this.$.mymap.zoom = 15;
+                if(this.quantity >= this.resultsfiltered.length){
+                    this.quantity = 0;   
+                } 
+                this.show = true;
+                this.current = this.resultsfiltered[this.quantity];
+                this.lat = this.resultsfiltered[this.quantity].latitude;
+                this.long = this.resultsfiltered[this.quantity].longitude;
+                this.quantity++;             
+            }
+            
+            search() {                
+                this.$.mymap.zoom = 13;
+                this.$.mapsearch.latitude = this.$.geolocation.lat;
+                this.$.mapsearch.longitude = this.$.geolocation.long;
+                this.radius = 10;
+                this.quantity = 0;
+                this.query = this.$.inputsearch.value;
+                this.$.mapsearch.search();
+            }
+            
+            _updateLocation(){
+                this.lat = this.$.geolocation.lat;
+                this.long = this.$.geolocation.long;
+            }
+            
+            _resultsChanged() {              
+                this.resultsfiltered = [];
+                if(this.$.inputdistance.value != undefined && this.$.inputdistance.value.match(/^[0-9]+$/)){
+                    this.distance = this.$.inputdistance.value;
+                }
+                for(var i = 0; i < this.results.length; i++){
+                    var distance = this.calculateDistance(this.$.geolocation.lat, this.$.geolocation.long, this.results[i].latitude, this.results[i].longitude);
+                    if(this.checkDistance(distance)){
+                        this.push('resultsfiltered', this.results[i]);
+                    }
+                }
+                this.count = this.resultsfiltered.length;
+                if(this.count == 0){
+                    this.$.mymap.zoom = 15;
+                    this._updateLocation();
+                    this.$.notification.text = "Não foi encontrado nenhum resultado no raio em que você informou! Tente novamente com outra palavra ou um raio maior.";
+                    this.$.notification.open();  
+                }
+            }
+            
+            checkDistance(distance) {
+                if (distance <= this.distance){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            
+            convertDegreesToRadians(degrees){
+                return degrees * Math.PI / 180;
+            }
+            
+            calculateDistance(lat1, long1, lat2, long2) {
+                lat1 = this.convertDegreesToRadians(lat1);
+                long1 = this.convertDegreesToRadians(long1);
+                lat2 = this.convertDegreesToRadians(lat2);
+                long2 = this.convertDegreesToRadians(long2);
+                return 6371 * Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1));
+            } 
+
+        }
+        window.customElements.define(MyView9.is, MyView9);
+    </script>
+</dom-module>

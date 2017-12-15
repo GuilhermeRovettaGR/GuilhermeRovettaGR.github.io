@@ -24,6 +24,7 @@
             .greenButton {
                 background-color: #4CAF50;
                 color: #FFFFFF;
+                width: 120px;
             }
             
             .center {
@@ -125,6 +126,27 @@
                         type: Boolean,
                         notify: true,
                         value: false
+                    },
+                    alt: {
+                        type: Number,
+                        notify: true,
+                        observer: '_altChanged',
+                        reflectToAttribute: true,
+                        value: 0
+                    },
+                    acc: {
+                        type: Number,
+                        notify: true,
+                        observer: '_accChanged',
+                        reflectToAttribute: true,
+                        value: 0
+                    },
+                    speed: {
+                        type: Number,
+                        notify: true,
+                        observer: '_speedChanged',
+                        reflectToAttribute: true,
+                        value: 0
                     }
                 }
             }
@@ -152,6 +174,18 @@
             _endlocateChanged(newValue, oldValue) {
                 this.endlocate = newValue;
             }
+            
+            _altChanged(newValue, oldValue) {
+                this.alt = newValue;
+            }
+            
+            _accChanged(newValue, oldValue) {
+                this.acc = newValue;
+            }
+            
+            _speedChanged(newValue, oldValue) {
+                this.speed = newValue;
+            }
 
             computeLink(lat, long) {
                 return "maps.google.com/maps?q=" + lat + "," + long;
@@ -175,6 +209,9 @@
             _onShow(pos) {
                 this.lat = pos.coords.latitude;
                 this.long = pos.coords.longitude;
+                this.alt = pos.coords.altitude;
+                this.acc = pos.coords.accuracy;
+                this.speed = pos.coords.speed;
                 this.locate = this.lat + ',' + this.long;
                 this.position = true;
                 if(this.position && this.direction){
