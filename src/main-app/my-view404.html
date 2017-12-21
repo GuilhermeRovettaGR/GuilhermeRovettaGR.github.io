@@ -1,16 +1,45 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="my-view404">
     <template>
-    <style>
-        :host {
-            display: block;
-            padding: 10px 20px;
-        }
-    </style>
-
-    Oops you hit a 404. <a href="[[rootPath]]">Head back to home.</a>
+        <style include="shared-styles">
+            :host {
+                display: block;
+                padding: 10px 20px;
+            }
+            
+            h1 {
+                font-size: 10em;
+            }
+            
+            p {
+                font-size: 1.1em;
+            }
+            
+            h1, p {
+                margin: 0px;  
+                color: var(--app-secondary-color);
+            }
+            
+            .unknow {
+                margin-top: 200px;
+                text-align: center;
+            }
+            
+            .links {
+                text-decoration: none;
+                color: var(--app-secondary-color);
+                font-weight: bold;
+            }
+        </style>
+    
+        <div class="unknow layout center-justified">
+            <h1>404</h1>
+            <p>Opa, parece que você se perdeu!!</p>
+            <a class="links" href="[[rootPath]]">Voltar para a Home.</a>
+        </div>
   </template>
 
     <script>

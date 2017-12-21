@@ -7,6 +7,7 @@
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="../device-pointer/device-pointer.html">
 <link rel="import" href="../user-notification/user-notification.html">
+<link href="https://fonts.googleapis.com/css?family=Shadows+Into+Light" rel="stylesheet">
 
 <dom-module id="my-view8">
     <template>
@@ -57,10 +58,6 @@
                 --paper-progress-active-color: #a28356;
             }
             
-            h1, h2{
-                text-align: center;
-            }
-            
             .center {
                 text-align: center;
                 vertical-align: middle;
@@ -81,6 +78,20 @@
             
             .text { 
                 color: var(--paper-grey-800);                 
+            }
+            
+            .calibrateButton {
+                background-color: #5675a2;
+                color: #FFFFFF;
+            }
+            
+            h1,h2 {
+                font-family: 'Shadows Into Light', cursive;
+                text-align: center;
+            }
+            
+            h1 {
+                font-size: 2em;
             }
         </style>
      
@@ -105,21 +116,23 @@
         <div class="card layout center-justified">       
             <iron-ajax id="ajaxtext" auto="" url="https://hp-api.herokuapp.com/api/characters" handle-as="json" last-response="{{ajaxResponse}}" on-response="textResponse">
             </iron-ajax>
-            <div class="container layout vertical center wrap">
+            <template is="dom-if" if="{{show}}">
                 <div class="container layout vertical center wrap">
-                    <iron-image sizing="contain" src="{{character.image}}" class="image"></iron-image>
-                </div>
-                <div class="container layout vertical center wrap">
-                    <div class="header">{{character.name}}</div>
-                    <div class="text"><b>Species:</b> {{character.species}}</div>
-                    <div class="text"><b>Gender:</b> {{character.gender}}</div>
-                    <div class="text"><b>House:</b> {{character.house}}</div>
-                    <div class="text"><b>Date of birth:</b> {{character.dateOfBirth}}</div>
-                    <div class="text"><b>Ancestry:</b> {{character.ancestry}}</div>
-                    <div class="text"><b>Patronuos:</b> {{character.patronus}}</div>
-                    <div class="text"><b>Wand:</b> {{character.wand.wood}} / {{character.wand.core}}</div>
+                    <div class="container layout vertical center wrap">
+                        <iron-image sizing="contain" src="{{character.image}}" class="image"></iron-image>
+                    </div>
+                    <div class="container layout vertical center wrap">
+                        <div class="header">{{character.name}}</div>
+                        <div class="text"><b>Species:</b> {{character.species}}</div>
+                        <div class="text"><b>Gender:</b> {{character.gender}}</div>
+                        <div class="text"><b>House:</b> {{character.house}}</div>
+                        <div class="text"><b>Date of birth:</b> {{character.dateOfBirth}}</div>
+                        <div class="text"><b>Ancestry:</b> {{character.ancestry}}</div>
+                        <div class="text"><b>Patronuos:</b> {{character.patronus}}</div>
+                        <div class="text"><b>Wand:</b> {{character.wand.wood}} / {{character.wand.core}}</div>
+                    </div> 
                 </div> 
-            </div>    
+            </template>   
         </div>
         
         <div class="card layout center-justified">       
@@ -182,6 +195,10 @@
                         observer: '_namerandomChanged',
                         reflectToAttribute: true,
                         value: ''
+                    },
+                    show: {
+                        type: Boolean,
+                        value: false
                     }
                 }
             }
@@ -225,6 +242,7 @@
                 this.$.notification.classList.remove("normal");
                 this.$.notification.classList.add("sucess");
                 this.notify("Obrigado, seu jogo foi calibrado com sucesso!");
+                this.show = true;
             }
             
             calibrate(){ 
